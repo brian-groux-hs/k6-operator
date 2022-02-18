@@ -66,8 +66,13 @@ func (r *K6Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	case "finished":
 		// delete if configured
 		if k6.Spec.Cleanup == "post" {
-			log.Info("Cleaning up all resources")
-			r.Delete(ctx, k6)
+			if k6.Spec.CleanupStrategy == "jobs" {
+				log.Info("Cleaning up jobs and pods")
+				return DeleteJobs(ctx, log, k6, r)
+			} else {
+				log.Info("Cleaning up all resources")
+				r.Delete(ctx, k6)
+			}
 		}
 		// notify if configured
 		return ctrl.Result{}, nil

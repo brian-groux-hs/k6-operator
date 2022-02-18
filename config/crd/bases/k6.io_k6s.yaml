@@ -44,6 +44,13 @@ spec:
                 enum:
                 - post
                 type: string
+              cleanupStreategy:
+                description: Cleanup allows for automatic cleanup of resources post
+                  execution
+                enum:
+                - all
+                - jobs
+                type: string
               parallelism:
                 format: int32
                 type: integer
@@ -1701,6 +1708,7 @@ spec:
                 - created
                 - started
                 - finished
+                - deleted
                 type: string
             type: object
         type: object

@@ -50,17 +50,18 @@ type K6Scuttle struct {
 
 // K6Spec defines the desired state of K6
 type K6Spec struct {
-	Script      K6Script               `json:"script"`
-	Parallelism int32                  `json:"parallelism"`
-	Separate    bool                   `json:"separate,omitempty"`
-	Arguments   string                 `json:"arguments,omitempty"`
-	Ports       []corev1.ContainerPort `json:"ports,omitempty"`
-	Starter     Pod                    `json:"starter,omitempty"`
-	Runner      Pod                    `json:"runner,omitempty"`
-	Quiet       string                 `json:"quiet,omitempty"`
-	Paused      string                 `json:"paused,omitempty"`
-	Scuttle     K6Scuttle              `json:"scuttle,omitempty"`
-	Cleanup     Cleanup                `json:"cleanup,omitempty"`
+	Script          K6Script               `json:"script"`
+	Parallelism     int32                  `json:"parallelism"`
+	Separate        bool                   `json:"separate,omitempty"`
+	Arguments       string                 `json:"arguments,omitempty"`
+	Ports           []corev1.ContainerPort `json:"ports,omitempty"`
+	Starter         Pod                    `json:"starter,omitempty"`
+	Runner          Pod                    `json:"runner,omitempty"`
+	Quiet           string                 `json:"quiet,omitempty"`
+	Paused          string                 `json:"paused,omitempty"`
+	Scuttle         K6Scuttle              `json:"scuttle,omitempty"`
+	Cleanup         Cleanup                `json:"cleanup,omitempty"`
+	CleanupStrategy CleanupStrategy        `json:"cleanupStreategy,omitempty"`
 }
 
 // K6Script describes where the script to execute the tests is found
@@ -88,8 +89,12 @@ type K6Configmap struct {
 // +kubebuilder:validation:Enum=post
 type Cleanup string
 
+// Cleanup allows for automatic cleanup of resources post execution
+// +kubebuilder:validation:Enum=all;jobs
+type CleanupStrategy string
+
 // Stage describes which stage of the test execution lifecycle our runners are in
-// +kubebuilder:validation:Enum=created;started;finished
+// +kubebuilder:validation:Enum=created;started;finished;deleted
 type Stage string
 
 // K6Status defines the observed state of K6
